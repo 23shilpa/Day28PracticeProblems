@@ -1,6 +1,7 @@
 import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 
 public class AddressBook {
     private List<Contact> contacts;
@@ -27,10 +28,10 @@ public class AddressBook {
         }
     }
 
-    public <CSVWriter> void saveToCSV() {
+    public void saveToCSV() {
         try (CSVWriter writer = new CSVWriter(new FileWriter(CSV_FILE))) {
             for (Contact contact : contacts) {
-                writer.wait(new String[] {
+                writer.writeNext(new String[] {
                         contact.getFirstName(),
                         contact.getLastName(),
                         contact.getAddress(),
@@ -83,11 +84,27 @@ public class AddressBook {
     public static void main(String[] args) {
         AddressBook addressBook = new AddressBook();
 
-        Contact contact1 = new Contact("John", "Doe", "123 Main St", "New York", "NY", "10001", "555-123-4567", "john.doe@example.com");
-        Contact contact2 = new Contact("Jane", "Smith", "456 Elm St", "Los Angeles", "CA", "90001", "555-987-6543", "jane.smith@example.com");
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter contact details:");
+        System.out.print("First Name: ");
+        String firstName = scanner.nextLine();
+        System.out.print("Last Name: ");
+        String lastName = scanner.nextLine();
+        System.out.print("Address: ");
+        String address = scanner.nextLine();
+        System.out.print("City: ");
+        String city = scanner.nextLine();
+        System.out.print("State: ");
+        String state = scanner.nextLine();
+        System.out.print("ZIP: ");
+        String zip = scanner.nextLine();
+        System.out.print("Phone Number: ");
+        String phoneNumber = scanner.nextLine();
+        System.out.print("Email: ");
+        String email = scanner.nextLine();
 
-        addressBook.addContact(contact1);
-        addressBook.addContact(contact2);
+        Contact newContact = new Contact(firstName, lastName, address, city, state, zip, phoneNumber, email);
+        addressBook.addContact(newContact);
 
         addressBook.saveToCSV();
         addressBook.loadFromCSV();
@@ -96,44 +113,5 @@ public class AddressBook {
         addressBook.loadFromJSON();
 
         addressBook.listContacts();
-    }
-}
-
-class Contact {
-    private String firstName;
-    private String lastName;
-    private String address;
-    private String city;
-    private String state;
-    private String zip;
-    private String phoneNumber;
-    private String email;
-
-    public Contact(String firstName, String lastName, String address, String city, String state, String zip, String phoneNumber, String email) {
-        this.firstName = firstName;
-        this.lastName = lastName;
-        this.address = address;
-        this.city = city;
-        this.state = state;
-        this.zip = zip;
-        this.phoneNumber = phoneNumber;
-        this.email = email;
-    }
-
-    // Getters and setters
-
-    @Override
-    public String toString() {
-        return "Name: " + firstName + " " + lastName +
-                "\nAddress: " + address +
-                "\nCity: " + city +
-                "\nState: " + state +
-                "\nZip: " + zip +
-                "\nPhone Number: " + phoneNumber +
-                "\nEmail: " + email + "\n";
-    }
-
-    public String getFirstName() {
-        return null;
     }
 }
